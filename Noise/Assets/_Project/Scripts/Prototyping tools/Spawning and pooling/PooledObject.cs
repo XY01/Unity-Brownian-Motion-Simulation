@@ -20,4 +20,9 @@ public class PooledObject : MonoBehaviour
     {
         m_ObjectPool.ObjectDeactivated(gameObject);
     }
+
+    void OnDestroy()
+    {
+        m_ObjectPool.m_IsDirty = true;
+    }
 }

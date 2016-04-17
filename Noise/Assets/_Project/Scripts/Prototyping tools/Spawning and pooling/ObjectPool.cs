@@ -2,23 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
+/// <summary>
+/// Object pool
+/// - Instantiates a pool of objects on start to stop processing overhead of instantiating at run time.
+/// - Maintains a list of objects that are active and inactive
+/// </summary>
 public class ObjectPool : MonoBehaviour 
 {
+    // The object you want to pool
     public GameObject   m_ObjectToPool;
+
+    // Number of objects to pool
     public int          m_NumberToPool = 10;
+
+    // Index of object being pooled
 	int 				m_PooledObjectIndex = 0;
+
+    // 
     bool                m_KeepToppedUp = true;
+
+    public bool         m_IsDirty = false;
 
     List<GameObject>    m_ActiveObjects = new List<GameObject>();
     List<GameObject>    m_InctiveObjects = new List<GameObject>();
 	
 	void Start ()
     {
-        for (int i = 0; i < m_NumberToPool; i++)
-        {
-            InstantiateObject();
-        }	
+        InstantiateObjects(m_NumberToPool);
 	}
 
 
@@ -26,6 +36,23 @@ public class ObjectPool : MonoBehaviour
     {
         m_ObjectToPool = poolObject;
         m_NumberToPool = numberToPool;
+    }
+
+    void FixedUpdate()
+    {
+        if (m_IsDirty)
+        {
+            int numberToPool = 0;
+            numberToPool += m_InctiveObjects.RemoveAll(item => item == null);
+            numberToPool += m_ActiveObjects.RemoveAll(item => item == null);
+            m_IsDirty = false;
+
+            if (m_KeepToppedUp)
+            {
+                InstantiateObjects(numberToPool);
+            }
+
+        }
     }
 		
 	public GameObject GetInactiveObject( bool forceSpawn )
@@ -44,6 +71,14 @@ public class ObjectPool : MonoBehaviour
         }
      
         return selectedGO;
+    }
+
+    void InstantiateObjects( int count )
+    {
+        for (int i = 0; i < count; i++)
+        {
+            InstantiateObject();
+        }
     }
 
     GameObject InstantiateObject()
@@ -105,4 +140,5 @@ public class ObjectPool : MonoBehaviour
 		m_InctiveObjects.Clear();
 	}
 }
+
 
