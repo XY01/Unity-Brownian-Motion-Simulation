@@ -38,7 +38,7 @@ public class SpawnFromPool : MonoBehaviour
         {
             ObjectPool newPool = new GameObject(i + " Object pool - " + m_ObjectsToSpawn[i].name ).AddComponent<ObjectPool>();
             newPool.Init(m_ObjectsToSpawn[i], m_NumberToPool);
-            newPool.transform.SetParent(transform);
+            //newPool.transform.SetParent(null);
             m_ObjectPools[i] = newPool;
         }
 
@@ -70,8 +70,7 @@ public class SpawnFromPool : MonoBehaviour
 		{
 			if( m_Debug ) print( "Pool is empty" );
 			return;
-		}
-        
+		}        
 
         // Position
         int volumeIndex = Random.Range(0, m_Volume.Length);

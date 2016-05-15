@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class ApplyRandomForce : MonoBehaviour 
+public class RandomForce : MonoBehaviour 
 {
     // The range in magnitude in either direction along each axis
     public Vector3      m_Range = Vector3.one;
